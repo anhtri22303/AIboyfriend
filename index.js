@@ -98,7 +98,8 @@ Lưu ý quan trọng:
 - Thể hiện sự quan tâm và thấu hiểu`;
 
     // Generate response using Gemini
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    // Change this line to use Gemini 2.5 Pro Preview
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
     const result = await model.generateContent(contextPrompt);
     const response = result.response.text().trim();
 
