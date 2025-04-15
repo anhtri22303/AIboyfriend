@@ -12,5 +12,9 @@
       "dest": "index.js"
     }
   ],
-  "includeFiles": ["views/**", "public/**"]
+  "functions": {
+    "index.js": {
+      "includeFiles": "views/**,public/**"
+    }
+  }
 }
