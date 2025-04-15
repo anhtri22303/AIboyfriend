@@ -21,7 +21,7 @@
           <div class="profile-info">
             <div class="avatar-container">
               <img
-                src="<%= boyfriend.avatar %>"
+                src="/assets/avatar.jpg"
                 alt="<%= boyfriend.name %>"
                 class="avatar"
               />
@@ -33,6 +33,14 @@
             </div>
           </div>
           <div class="header-actions">
+            <div class="context-selector">
+              <select id="context-mode" class="context-mode-select">
+                <option value="default">Chế độ thường</option>
+                <option value="astrology">Phân tích bản đồ sao</option>
+                <option value="tarot">Đọc bài Tarot</option>
+                <option value="psychology">Tư vấn tâm lý</option>
+              </select>
+            </div>
             <button id="settings-btn" class="icon-button" aria-label="Settings">
               <i class="fas fa-cog"></i>
             </button>
@@ -44,7 +52,17 @@
         </div>
         
         <div class="chat-input-container">
+          <div class="image-preview-container">
+            <img src="" alt="Preview" class="image-preview">
+            <button class="remove-image-btn">×</button>
+          </div>
           <div class="input-wrapper">
+            <div class="image-upload-container">
+              <button id="image-upload-button" class="image-upload-button">
+                <i class="fas fa-image"></i>
+              </button>
+              <input type="file" id="image-upload" class="image-upload-input" accept="image/jpeg, image/png, image/gif">
+            </div>
             <input
               type="text"
               id="user-message"
@@ -151,6 +169,64 @@
         </form>
       </div>
     </div>
+
+    <!-- Add image modal for fullscreen view -->
+    <div id="image-modal" class="image-modal">
+      <button class="close-image-modal">&times;</button>
+      <img class="fullscreen-image" src="" alt="Fullscreen image">
+    </div>
+
+    <!-- Trong phần hiển thị tin nhắn -->
+    <div id="messageTemplates" style="display: none;">
+      <!-- User message template -->
+      <div class="message-container user-message">
+        <div class="message"></div>
+        <div class="message-time"></div>
+      </div>
+      
+      <!-- AI message template -->
+      <div class="message-container ai-message">
+        <div class="message"></div>
+        <div class="message-time"></div>
+      </div>
+    </div>
+
+    <script>
+      // Thêm đoạn này vào phần script để xử lý HTML trong tin nhắn
+      function displayMessage(message, sender, time, imageUrl = null) {
+        const isUser = sender === 'User';
+        const messageContainer = document.createElement('div');
+        messageContainer.className = `message-container ${isUser ? 'user-message' : 'ai-message'}`;
+        
+        const messageContent = document.createElement('div');
+        messageContent.className = 'message';
+        
+        // Kiểm tra nếu tin nhắn chứa HTML (astrology mode)
+        if (!isUser && message.includes('<div class="astrology-message">')) {
+          messageContent.innerHTML = message;
+        } else {
+          messageContent.innerHTML = message.replace(/\n/g, '<br>');
+        }
+        
+        // Thêm hình ảnh nếu có
+        if (imageUrl) {
+          const img = document.createElement('img');
+          img.src = imageUrl;
+          img.className = 'message-image';
+          messageContainer.appendChild(img);
+        }
+        
+        messageContainer.appendChild(messageContent);
+        
+        const messageTime = document.createElement('div');
+        messageTime.className = 'message-time';
+        messageTime.textContent = new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        messageContainer.appendChild(messageTime);
+        
+        document.getElementById('chat-messages').appendChild(messageContainer);
+        scrollToBottom();
+      }
+    </script>
 
     <script src="/js/chat.js"></script>
   </body>
