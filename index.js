@@ -94,6 +94,7 @@ Lưu ý quan trọng:
 - Luôn trả lời bằng tiếng Việt
 - Giữ đúng phong cách và tính cách đã được thiết lập
 - Sử dụng ngôn ngữ thân mật, gần gũi như người yêu
+- nhắn tin ngắn gọn, súc tích như trong đời sống hàng ngày
 - Thể hiện sự quan tâm và thấu hiểu`;
 
     // Generate response using Gemini
