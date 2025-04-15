@@ -97,9 +97,8 @@ Lưu ý quan trọng:
 - nhắn tin ngắn gọn, súc tích như trong đời sống hàng ngày
 - Thể hiện sự quan tâm và thấu hiểu`;
 
-    // Generate response using Gemini
-    // Change this line to use Gemini 2.5 Pro Preview
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    // Generate response using Gemini 2.5 Pro
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
     const result = await model.generateContent(contextPrompt);
     const response = result.response.text().trim();
 
@@ -146,7 +145,15 @@ app.post("/reset-conversation", (req, res) => {
   res.json({ message: "Conversation reset successfully" });
 });
 
-// Start server
-app.listen(port, () => {
-  console.log(`Virtual Boyfriend App running on http://localhost:${port}`);
+// Start server with automatic port selection if default is in use
+const server = app.listen(port, () => {
+  console.log(`Virtual Boyfriend App running on http://localhost:${server.address().port}`);
+}).on('error', (e) => {
+  if (e.code === 'EADDRINUSE') {
+    console.log(`Port ${port} is busy, trying another port...`);
+    // Try a different port
+    server.listen(0);
+  } else {
+    console.error(e);
+  }
 });
